@@ -9,6 +9,12 @@
 import UIKit
 
 /*
+ 需求效果：
+ 1、当header没有进入nav时，tableView没有滑动效果，
+ 2、所有tableView的top，都是统一的
+ 3、当header进入nav之后，切换tableView并滑动，tableView会保持上一次滑动的位置
+ 4、当tableView向下滑动时，header顶部粘连效果
+ 
  思路：
  1、使用ScrollView和tableView嵌套
  2、ScrollView控制左右切换多个tableView
@@ -139,6 +145,7 @@ class ViewController: UIViewController, UIScrollViewDelegate,UITableViewDataSour
         
     }
     
+    //调整headerView的位置
     func adjustHeaderView() {
         var point: CGPoint = headerView.frame.origin
         if headerView.superview?.superview == tableView1 {
