@@ -68,14 +68,15 @@ class ViewController: UIViewController, UIScrollViewDelegate,UITableViewDataSour
         changeBar.autoresizingMask = [.flexibleTopMargin]
         headerView.addSubview(changeBar)
         
-        
-        bgScrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         bgScrollView.contentSize = CGSize(width: bgScrollView.frame.width*2, height: 0)
         bgScrollView.isPagingEnabled = true
         bgScrollView.bounces = false
         
         tableView1.tableHeaderView = UITableViewHeaderFooterView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200))
         tableView2.tableHeaderView = UITableViewHeaderFooterView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 200))
+        
+        tableView1.scrollIndicatorInsets = UIEdgeInsets(top: headerHeight, left: 0, bottom: 0, right: 0)
+        tableView2.scrollIndicatorInsets = UIEdgeInsets(top: headerHeight, left: 0, bottom: 0, right: 0)
         
         bgScrollView.addSubview(tableView1)
         bgScrollView.addSubview(tableView2)
@@ -93,6 +94,13 @@ class ViewController: UIViewController, UIScrollViewDelegate,UITableViewDataSour
         }
         cell!.textLabel?.text = "第\(indexPath.row)行"
         return cell!
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let zfbVC = ZFBViewController()
+        navigationController?.pushViewController(zfbVC, animated: true)
+        
+        
     }
     
     
