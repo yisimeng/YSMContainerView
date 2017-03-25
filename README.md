@@ -18,7 +18,6 @@
 <center>![weibo](weibo.gif)</center>
 
 
-
 # 支付宝首页的滚动实现
 现象：
 1、向上滚动时，上面部分随着tableView一起向上滚动。
