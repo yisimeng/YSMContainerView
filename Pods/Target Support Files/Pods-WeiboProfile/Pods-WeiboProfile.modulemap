@@ -1,6 +1,0 @@
-framework module Pods_WeiboProfile {
-  umbrella header "Pods-WeiboProfile-umbrella.h"
-
-  export *
-  module * { export * }
-}

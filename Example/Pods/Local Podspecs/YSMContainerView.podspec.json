@@ -1,0 +1,22 @@
+{
+  "name": "YSMContainerView",
+  "version": "0.1.0",
+  "summary": "A short description of YSMContainerView.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/yisimeng/YSMContainerView",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "yisimeng": "465386131@qq.com"
+  },
+  "source": {
+    "git": "https://github.com/yisimeng/YSMContainerView.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "Pod/Classes/**/*"
+}

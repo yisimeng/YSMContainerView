@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'YSMContainerView_Example' do
+  pod 'YSMContainerView', :path => '../'
+
+  target 'YSMContainerView_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end

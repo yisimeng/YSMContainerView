@@ -1,0 +1,16 @@
+PODS:
+  - YSMContainerView (0.1.0)
+
+DEPENDENCIES:
+  - YSMContainerView (from `../`)
+
+EXTERNAL SOURCES:
+  YSMContainerView:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  YSMContainerView: 41749f00c826a566a2aa4977fef034f8b2503ceb
+
+PODFILE CHECKSUM: cc269a6956a4a3fde358792b84c2a775f479d039
+
+COCOAPODS: 1.5.0

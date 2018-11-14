@@ -1,0 +1,6 @@
+framework module YSMContainerView {
+  umbrella header "YSMContainerView-umbrella.h"
+
+  export *
+  module * { export * }
+}
