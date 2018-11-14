@@ -16,11 +16,13 @@ static NSString * kContainerViewCellReuseId = @"kContainerViewCellReuseId";
 @interface YSMContainerView ()<UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (nonatomic, strong) UICollectionView * collectionView;
-@property (nonatomic, strong) NSMutableArray * viewControllers;
+@property (nonatomic, strong) NSMutableArray<UIViewController<YSMContainrerChildControllerDelegate> *> * viewControllers;
 
 @end
 
-@implementation YSMContainerView
+@implementation YSMContainerView{
+    BOOL _isHorizontalScrolling;
+}
 
 #pragma mark -- Initialization
 
@@ -43,19 +45,27 @@ static NSString * kContainerViewCellReuseId = @"kContainerViewCellReuseId";
     [self.collectionView addSubview:self.containerHeaderView];
 }
 
+
 - (void)dealloc{
-    
+    [self _removeAllObserver];
 }
 
 #pragma mark -- private
-- (void)_layoutViewControllers{
-    CGRect headerFrame = self.containerHeaderView.frame;
-    // 可以判断header的位置是否在最顶部，然后判断当前的偏移量，可以保持向下滑动很多之后横向切换不该边contentoffset
-    CGPoint contentOffset = CGPointMake(0, -(headerFrame.origin.y - (-180)));
+
+- (void)_removeAllObserver{
     [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController<YSMContainrerChildControllerDelegate> * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        obj.childScrollView.contentOffset = contentOffset;
+        [obj.childScrollView removeObserver:self forKeyPath:@"contentOffset"];
     }];
 }
+
+//- (void)_layoutViewControllers{
+//    CGRect headerFrame = self.containerHeaderView.frame;
+//    // 可以判断header的位置是否在最顶部，然后判断当前的偏移量，可以保持向下滑动很多之后横向切换不该边contentoffset
+//    CGPoint contentOffset = CGPointMake(0, -(headerFrame.origin.y - (-180)));
+//    [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController<YSMContainrerChildControllerDelegate> * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+//        obj.childScrollView.contentOffset = contentOffset;
+//    }];
+//}
 
 #pragma mark -- UICollectionViewDataSource
 
@@ -71,7 +81,6 @@ static NSString * kContainerViewCellReuseId = @"kContainerViewCellReuseId";
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     UICollectionViewCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:kContainerViewCellReuseId forIndexPath:indexPath];
-    [cell.contentView ysm_removeAllSubviews];
     
     UIViewController<YSMContainrerChildControllerDelegate> * childViewController = [self.dataSource containerView:self viewControllerAtIndex:indexPath.row];
     UIScrollView * childScrollView = childViewController.childScrollView;
@@ -87,16 +96,32 @@ static NSString * kContainerViewCellReuseId = @"kContainerViewCellReuseId";
         
         [childScrollView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew context:nil];
     }
-    // TODO: 设置偏移量
-    [cell.contentView addSubview:childScrollView];
     return cell;
 }
+
+- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath{
+    UIViewController<YSMContainrerChildControllerDelegate> * childViewController = [self.dataSource containerView:self viewControllerAtIndex:indexPath.row];
+    UIScrollView * childScrollView = childViewController.childScrollView;
+    CGRect headerFrame = self.containerHeaderView.frame;
+    CGPoint contentOffset = CGPointMake(0, -(headerFrame.origin.y - (-180)));
+    childScrollView.contentOffset = contentOffset;
+    
+    // 为使child controller 的生命周期正常，所以没在cellforItem里使用
+    [cell.contentView addSubview:childScrollView];
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath{
+    // 为使child controller 的生命周期正常，所以没在cellforItem里使用
+    [cell.contentView ysm_removeAllSubviews];
+}
+
 
 #pragma mark -- Horizontal Scroll
 #pragma mark -- UICollectionViewDelegate & UIScrollViewDelegate
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
     // TODO: 滑动时控制相邻两个scrollView的偏移量与当前一致
-    [self _layoutViewControllers];
+//    [self _layoutViewControllers];
+    _isHorizontalScrolling = YES;
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
@@ -106,8 +131,13 @@ static NSString * kContainerViewCellReuseId = @"kContainerViewCellReuseId";
     self.containerHeaderView.frame = headerFrame;
 }
 
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    _isHorizontalScrolling = NO;
+}
+
 #pragma mark -- Vertical Scroll
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
+    if (_isHorizontalScrolling) return;
     if (![keyPath isEqualToString:@"contentOffset"]) {
         return [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }

@@ -28,8 +28,11 @@
     [self.view addSubview:self.containerView];
     
     YSMTableViewController * table1 = [[YSMTableViewController alloc] initWithStyle:UITableViewStylePlain];
+    table1.index = 1;
     YSMTableViewController * table2 = [[YSMTableViewController alloc] initWithStyle:UITableViewStylePlain];
+    table2.index = 2;
     YSMTableViewController * table3 = [[YSMTableViewController alloc] initWithStyle:UITableViewStylePlain];
+    table3.index = 3;
     self.viewControllers = @[table1,table2,table3];
 }
 

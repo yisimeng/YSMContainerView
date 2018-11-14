@@ -21,6 +21,31 @@
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"aa"];
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    if (_index == 1) {
+        NSLog(@"viewWillAppear");
+    }
+}
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    if (_index == 1) {
+        NSLog(@"viewDidAppear");
+    }
+}
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    if (_index == 1) {
+        NSLog(@"viewWillDisappear");
+    }
+}
+- (void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    if (_index == 1) {
+        NSLog(@"viewDidDisappear");
+    }
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
