@@ -5,11 +5,11 @@
 [![License](https://img.shields.io/cocoapods/l/YSMContainerView.svg?style=flat)](https://cocoapods.org/pods/YSMContainerView)
 [![Platform](https://img.shields.io/cocoapods/p/YSMContainerView.svg?style=flat)](https://cocoapods.org/pods/YSMContainerView)
 
-## Example
+![微博个人页](containerView.gif)
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
+仿微博个人页，之前用Swift写了一个，但是只是效果实现了，但是扩展性不太好，所以从新优化了一下，重新写了一个。
 
-## Requirements
+[详细介绍及实现思路]()
 
 ## Installation
 

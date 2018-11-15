@@ -82,7 +82,7 @@
 
 @interface YSMContainerView : UIView
 
-@property (readonly) NSMutableArray * viewControllers;
+@property (nonatomic,strong) NSMutableArray * viewControllers;
 
 @property (readonly) UIView * containerHeaderView;
 /**
