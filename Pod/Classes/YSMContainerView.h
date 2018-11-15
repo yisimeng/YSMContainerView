@@ -85,6 +85,10 @@
 @property (readonly) NSMutableArray * viewControllers;
 
 @property (readonly) UIView * containerHeaderView;
+/**
+ header hanging height。default 0
+ */
+@property (nonatomic, assign) CGFloat headerHangingHeight;
 
 @property (nonatomic, weak, nullable) id <YSMContainerViewDelegate> delegate;
 
@@ -93,7 +97,5 @@
 - (BOOL)removeChildControllerAtIndex:(NSInteger)index;
 
 - (BOOL)removeChildController:(UIViewController *)viewController;
-
-
 
 @end

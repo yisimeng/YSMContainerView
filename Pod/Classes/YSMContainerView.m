@@ -42,6 +42,7 @@ static NSString * const kContainerViewCellReuseId = @"kContainerViewCellReuseId"
 }
 
 - (void)initialization{
+    self.headerHangingHeight = 0;
     [self addSubview:self.collectionView];
 }
 
@@ -170,12 +171,12 @@ static NSString * const kContainerViewCellReuseId = @"kContainerViewCellReuseId"
         headerFrame.origin.y = 0;
         CGFloat height = (-_headerViewHeight) - contentOffset.y;
         headerFrame.size.height = height + _headerViewHeight;
-    }else if (contentOffset.y <= 0){
-        // header 初始位置到完全隐藏之间
-        headerFrame.origin.y = -(contentOffset.y - (-_headerViewHeight));
+    }else if (contentOffset.y <= -self.headerHangingHeight){
+        // header 初始位置到悬停位置之间
+        headerFrame.origin.y = -(_headerViewHeight + contentOffset.y);
         headerFrame.size.height = _headerViewHeight;
     }else{
-        headerFrame.origin.y = -_headerViewHeight;
+        headerFrame.origin.y = self.headerHangingHeight -_headerViewHeight;
     }
     self.containerHeaderView.frame = headerFrame;
     

@@ -26,6 +26,7 @@
     self.containerView = [[YSMContainerView alloc] initWithFrame:self.view.bounds];
     self.containerView.dataSource = self;
     self.containerView.delegate = self;
+    self.containerView.headerHangingHeight = 64;
     [self.view addSubview:self.containerView];
     
     UICollectionViewFlowLayout * layout = [[UICollectionViewFlowLayout alloc] init];
