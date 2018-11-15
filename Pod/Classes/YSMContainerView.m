@@ -9,22 +9,23 @@
 #import "YSMContainerView.h"
 #import "UIView+YSMCategory.h"
 
-// TODO: 定位移除控制器
-
-static NSString * kContainerViewCellReuseId = @"kContainerViewCellReuseId";
+static NSString * const kContainerViewCellReuseId = @"kContainerViewCellReuseId";
 
 @interface YSMContainerView ()<UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (nonatomic, strong) UICollectionView * collectionView;
+@property (nonatomic, strong) UIView * containerHeaderView;
+
 @property (nonatomic, strong) NSMutableArray<UIViewController<YSMContainrerChildControllerDelegate> *> * viewControllers;
 
 @end
 
 @implementation YSMContainerView{
     BOOL _isHorizontalScrolling;
+    CGFloat _headerViewHeight;
 }
 
-#pragma mark -- Initialization
+#pragma mark - Initialization
 
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
@@ -42,15 +43,33 @@ static NSString * kContainerViewCellReuseId = @"kContainerViewCellReuseId";
 
 - (void)initialization{
     [self addSubview:self.collectionView];
-    [self.collectionView addSubview:self.containerHeaderView];
 }
 
+- (void)didMoveToSuperview{
+    [super didMoveToSuperview];
+    if (self.dataSource && [self.dataSource respondsToSelector:@selector(headerViewForContainerView:)]) {
+        self.containerHeaderView = [self.dataSource headerViewForContainerView:self];
+        self.containerHeaderView.clipsToBounds = YES;
+        [self.collectionView addSubview:self.containerHeaderView];
+        _headerViewHeight = self.containerHeaderView.frame.size.height;
+    }
+}
 
 - (void)dealloc{
     [self _removeAllObserver];
 }
 
-#pragma mark -- private
+#pragma mark - public
+
+// 移除控制器
+- (BOOL)removeChildController:(UIViewController *)viewController{
+    return NO;
+}
+- (BOOL)removeChildControllerAtIndex:(NSInteger)index{
+    return NO;
+}
+
+#pragma mark - private
 
 - (void)_removeAllObserver{
     [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController<YSMContainrerChildControllerDelegate> * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -58,22 +77,12 @@ static NSString * kContainerViewCellReuseId = @"kContainerViewCellReuseId";
     }];
 }
 
-//- (void)_layoutViewControllers{
-//    CGRect headerFrame = self.containerHeaderView.frame;
-//    // 可以判断header的位置是否在最顶部，然后判断当前的偏移量，可以保持向下滑动很多之后横向切换不该边contentoffset
-//    CGPoint contentOffset = CGPointMake(0, -(headerFrame.origin.y - (-180)));
-//    [self.viewControllers enumerateObjectsUsingBlock:^(UIViewController<YSMContainrerChildControllerDelegate> * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-//        obj.childScrollView.contentOffset = contentOffset;
-//    }];
-//}
-
-#pragma mark -- UICollectionViewDataSource
+#pragma mark - UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
     NSInteger count = 0;
     if (self.dataSource && [self.dataSource respondsToSelector:@selector(numberOfViewControllersInContainerView:)]) {
         count = [self.dataSource numberOfViewControllersInContainerView:self];
-        return count;
     }
     self.viewControllers = [NSMutableArray arrayWithCapacity:count];
     return count;
@@ -88,9 +97,15 @@ static NSString * kContainerViewCellReuseId = @"kContainerViewCellReuseId";
     if (![self.viewControllers containsObject:childViewController]) {
         [self.ysm_viewController addChildViewController:childViewController];
         [self.viewControllers addObject:childViewController];
-
+        
+        if (@available(iOS 11.0, *)) {
+            childScrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+        } else {
+            childViewController.automaticallyAdjustsScrollViewInsets = NO;
+        }
+        childScrollView.frame = self.bounds;
         // TODO: 控制偏移的高度
-        UIEdgeInsets contentInset = UIEdgeInsetsMake(180, 0, 0, 0);
+        UIEdgeInsets contentInset = UIEdgeInsetsMake(_headerViewHeight, 0, 0, 0);
         childScrollView.contentInset = contentInset;
         childScrollView.scrollIndicatorInsets = contentInset;
         
@@ -100,14 +115,18 @@ static NSString * kContainerViewCellReuseId = @"kContainerViewCellReuseId";
 }
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath{
+    // 滑动时控制将要显示的scrollView的偏移量与当前一致
     UIViewController<YSMContainrerChildControllerDelegate> * childViewController = [self.dataSource containerView:self viewControllerAtIndex:indexPath.row];
     UIScrollView * childScrollView = childViewController.childScrollView;
     CGRect headerFrame = self.containerHeaderView.frame;
-    CGPoint contentOffset = CGPointMake(0, -(headerFrame.origin.y - (-180)));
-    childScrollView.contentOffset = contentOffset;
+    CGPoint contentOffset = CGPointMake(0, -(headerFrame.origin.y - (-_headerViewHeight)));
     
     // 为使child controller 的生命周期正常，所以没在cellforItem里使用
+    if (self.delegate && [self.delegate respondsToSelector:@selector(containerView:willScrollToChildControllerIndex:)]) {
+        [self.delegate containerView:self willScrollToChildControllerIndex:indexPath.row];
+    }
     [cell.contentView addSubview:childScrollView];
+    childScrollView.contentOffset = contentOffset;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath{
@@ -116,11 +135,8 @@ static NSString * kContainerViewCellReuseId = @"kContainerViewCellReuseId";
 }
 
 
-#pragma mark -- Horizontal Scroll
-#pragma mark -- UICollectionViewDelegate & UIScrollViewDelegate
+#pragma mark - Horizontal Scroll： UIScrollViewDelegate
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
-    // TODO: 滑动时控制相邻两个scrollView的偏移量与当前一致
-//    [self _layoutViewControllers];
     _isHorizontalScrolling = YES;
 }
 
@@ -133,9 +149,13 @@ static NSString * kContainerViewCellReuseId = @"kContainerViewCellReuseId";
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     _isHorizontalScrolling = NO;
+    NSInteger currentIndex = scrollView.contentOffset.y / scrollView.bounds.size.width;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(containerView:didScrollToChildControllerIndex:)]) {
+        [self.delegate containerView:self didScrollToChildControllerIndex:currentIndex];
+    }
 }
 
-#pragma mark -- Vertical Scroll
+#pragma mark - Vertical Scroll
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
     if (_isHorizontalScrolling) return;
     if (![keyPath isEqualToString:@"contentOffset"]) {
@@ -145,22 +165,27 @@ static NSString * kContainerViewCellReuseId = @"kContainerViewCellReuseId";
     
     CGRect headerFrame = self.containerHeaderView.frame;
     // TODO: 可以设置header悬停位置
-    if (contentOffset.y < -180) {
+    if (contentOffset.y < -_headerViewHeight) {
         // header 完全显示后，下拉
         headerFrame.origin.y = 0;
-        CGFloat height = (-180) - contentOffset.y;
-        headerFrame.size.height = height + 180;
+        CGFloat height = (-_headerViewHeight) - contentOffset.y;
+        headerFrame.size.height = height + _headerViewHeight;
     }else if (contentOffset.y <= 0){
         // header 初始位置到完全隐藏之间
-        headerFrame.origin.y = -(contentOffset.y - (-180));
-        headerFrame.size.height = 180;
+        headerFrame.origin.y = -(contentOffset.y - (-_headerViewHeight));
+        headerFrame.size.height = _headerViewHeight;
     }else{
-        headerFrame.origin.y = -180;
+        headerFrame.origin.y = -_headerViewHeight;
     }
     self.containerHeaderView.frame = headerFrame;
+    
+    if (self.delegate && [self.delegate respondsToSelector:@selector(containerView:didScrollContentOffset:)]) {
+        contentOffset.y = contentOffset.y + _headerViewHeight;
+        [self.delegate containerView:self didScrollContentOffset:contentOffset];
+    }
 }
 
-#pragma mark -- Getter & Setter
+#pragma mark - Getter & Setter
 
 - (UICollectionView *)collectionView{
     if (_collectionView == nil) {
@@ -174,20 +199,12 @@ static NSString * kContainerViewCellReuseId = @"kContainerViewCellReuseId";
         _collectionView.dataSource = self;
         _collectionView.delegate = self;
         _collectionView.pagingEnabled = YES;
-        _collectionView.bounces = YES;
+        _collectionView.bounces = NO;
         _collectionView.backgroundColor = [UIColor whiteColor];
-        _collectionView.showsHorizontalScrollIndicator = YES;
+        _collectionView.showsHorizontalScrollIndicator = NO;
         [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:kContainerViewCellReuseId];
     }
     return _collectionView;
-}
-
-- (UIView *)containerHeaderView{
-    if (_containerHeaderView == nil) {
-        _containerHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 180)];
-        _containerHeaderView.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.3];
-    }
-    return _containerHeaderView;
 }
 
 @end

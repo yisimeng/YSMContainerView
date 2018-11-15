@@ -19,6 +19,11 @@ it, simply add the following line to your Podfile:
 ```ruby
 pod 'YSMContainerView'
 ```
+## TODO
+
+* TODO: 定位移除控制器
+* TODO: 添加tab title，点击切换child vc
+* TODO: 控制偏移的高度，设置header悬停
 
 ## Author
 

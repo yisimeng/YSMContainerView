@@ -12,38 +12,31 @@
 
 @end
 
+static NSString * const kTableViewControllerCellId = @"kTableViewControllerCellId";
+
 @implementation YSMTableViewController
-@synthesize childScrollView;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.rowHeight = 80;
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"aa"];
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kTableViewControllerCellId];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    if (_index == 1) {
-        NSLog(@"viewWillAppear");
-    }
+    NSLog(@"viewWillAppear");
 }
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    if (_index == 1) {
-        NSLog(@"viewDidAppear");
-    }
+    NSLog(@"viewDidAppear");
 }
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
-    if (_index == 1) {
-        NSLog(@"viewWillDisappear");
-    }
+    NSLog(@"viewWillDisappear");
 }
 - (void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:animated];
-    if (_index == 1) {
-        NSLog(@"viewDidDisappear");
-    }
+    NSLog(@"viewDidDisappear");
 }
 
 #pragma mark - Table view data source
@@ -53,14 +46,15 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"aa" forIndexPath:indexPath];
-    cell.textLabel.text = [NSString stringWithFormat:@"第%ld行······", indexPath.row];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kTableViewControllerCellId forIndexPath:indexPath];
+    cell.textLabel.text = [NSString stringWithFormat:@"TableView Controller 第%ld行", indexPath.row];
     return cell;
 }
+
+#pragma mark - YSMContainrerChildControllerDelegate
 
 - (UIScrollView *)childScrollView{
     return self.tableView;
 }
-
 
 @end

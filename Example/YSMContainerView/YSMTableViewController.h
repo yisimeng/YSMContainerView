@@ -11,6 +11,4 @@
 
 @interface YSMTableViewController : UITableViewController<YSMContainrerChildControllerDelegate>
 
-@property (nonatomic, assign) NSInteger index;
-
 @end
