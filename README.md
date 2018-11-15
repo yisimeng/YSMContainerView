@@ -9,7 +9,7 @@
 
 仿微博个人页，之前用Swift写了一个，但是只是效果实现了，但是扩展性不太好，所以从新优化了一下，重新写了一个。
 
-[详细介绍及实现思路]()
+[详细介绍及实现思路](https://github.com/yisimeng/Pieces/blob/master/mind/YSMContainerView.md)
 
 ## Installation
 
