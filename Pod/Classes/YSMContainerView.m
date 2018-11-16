@@ -21,7 +21,6 @@ static NSString * const kContainerViewCellReuseId = @"kContainerViewCellReuseId"
 @end
 
 @implementation YSMContainerView{
-    BOOL _isHorizontalScrolling;
     CGFloat _headerViewHeight;
 }
 
@@ -105,7 +104,7 @@ static NSString * const kContainerViewCellReuseId = @"kContainerViewCellReuseId"
             childViewController.automaticallyAdjustsScrollViewInsets = NO;
         }
         childScrollView.frame = self.bounds;
-        // TODO: 控制偏移的高度
+        
         UIEdgeInsets contentInset = UIEdgeInsetsMake(_headerViewHeight, 0, 0, 0);
         childScrollView.contentInset = contentInset;
         childScrollView.scrollIndicatorInsets = contentInset;
@@ -138,7 +137,6 @@ static NSString * const kContainerViewCellReuseId = @"kContainerViewCellReuseId"
 
 #pragma mark - Horizontal Scroll： UIScrollViewDelegate
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
-    _isHorizontalScrolling = YES;
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
@@ -149,7 +147,6 @@ static NSString * const kContainerViewCellReuseId = @"kContainerViewCellReuseId"
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
-    _isHorizontalScrolling = NO;
     NSInteger currentIndex = scrollView.contentOffset.y / scrollView.bounds.size.width;
     if (self.delegate && [self.delegate respondsToSelector:@selector(containerView:didScrollToChildControllerIndex:)]) {
         [self.delegate containerView:self didScrollToChildControllerIndex:currentIndex];
@@ -158,7 +155,6 @@ static NSString * const kContainerViewCellReuseId = @"kContainerViewCellReuseId"
 
 #pragma mark - Vertical Scroll
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
-    if (_isHorizontalScrolling) return;
     if (![keyPath isEqualToString:@"contentOffset"]) {
         return [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
