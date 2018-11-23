@@ -62,7 +62,7 @@ static NSString * const kContainerViewCellReuseId = @"kContainerViewCellReuseId"
         _headerViewHeight = CGRectGetHeight(self.headerView.frame);
     }
     if (self.dataSource && [self.dataSource respondsToSelector:@selector(titlesForContainerView:)]) {
-        self.headerView.titles = [self.dataSource titlesForContainerView:self];
+        self.headerView.titles = (NSMutableArray *)[self.dataSource titlesForContainerView:self];
     }
 }
 
