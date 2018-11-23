@@ -14,6 +14,8 @@
 		2F596033A3395D5F775855CE393C2BA8 /* Pods-YSMContainerView_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 04E39BE028E96C52C497BF73831B982F /* Pods-YSMContainerView_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3FEABE323BC34C5BC37F3C14FF03EB37 /* UIView+YSMCategory.h in Headers */ = {isa = PBXBuildFile; fileRef = 2034B867B855DF39BAD5FB97892EB276 /* UIView+YSMCategory.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6918D9A51B1F02E7E16FB15268CB58FD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
+		8FC70E7521A2ADC0009EC1B5 /* YSMHeaderView.h in Headers */ = {isa = PBXBuildFile; fileRef = 8FC70E7321A2ADC0009EC1B5 /* YSMHeaderView.h */; };
+		8FC70E7621A2ADC0009EC1B5 /* YSMHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FC70E7421A2ADC0009EC1B5 /* YSMHeaderView.m */; };
 		92AC3C73A3659D7F98E8006DDC269DC8 /* YSMContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 38647DB36A4E19E9CE7FC00AEC0A6A20 /* YSMContainerView.m */; };
 		BFB9889CB7CF0AFBD9F76EF92057FF9A /* Pods-YSMContainerView_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 898A5B4FA9D8E14F6B9F228C16310166 /* Pods-YSMContainerView_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C185ADC6AA1EA6C3DB4DE4CA0EDA97F5 /* Pods-YSMContainerView_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = EBCF8796B59CF525B6A7BE2D31C58915 /* Pods-YSMContainerView_Example-dummy.m */; };
@@ -62,6 +64,8 @@
 		860929F7DF64033BC5764E6421855DFD /* YSMContainerView.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = YSMContainerView.modulemap; sourceTree = "<group>"; };
 		898A5B4FA9D8E14F6B9F228C16310166 /* Pods-YSMContainerView_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-YSMContainerView_Example-umbrella.h"; sourceTree = "<group>"; };
 		8F524A2FAE94C54270F0B7792F43E757 /* Pods-YSMContainerView_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-YSMContainerView_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
+		8FC70E7321A2ADC0009EC1B5 /* YSMHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = YSMHeaderView.h; path = Pod/Classes/YSMHeaderView.h; sourceTree = "<group>"; };
+		8FC70E7421A2ADC0009EC1B5 /* YSMHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = YSMHeaderView.m; path = Pod/Classes/YSMHeaderView.m; sourceTree = "<group>"; };
 		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		994129F6435BD728A2194FCB966FFA88 /* YSMContainerView-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "YSMContainerView-dummy.m"; sourceTree = "<group>"; };
 		A0BAA6819C032A7E62D0E768E74A5341 /* YSMContainerView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = YSMContainerView.h; path = Pod/Classes/YSMContainerView.h; sourceTree = "<group>"; };
@@ -219,6 +223,8 @@
 			children = (
 				A0BAA6819C032A7E62D0E768E74A5341 /* YSMContainerView.h */,
 				38647DB36A4E19E9CE7FC00AEC0A6A20 /* YSMContainerView.m */,
+				8FC70E7321A2ADC0009EC1B5 /* YSMHeaderView.h */,
+				8FC70E7421A2ADC0009EC1B5 /* YSMHeaderView.m */,
 				2034B867B855DF39BAD5FB97892EB276 /* UIView+YSMCategory.h */,
 				1B8E93F5519DFDB37E009ADB140132FF /* UIView+YSMCategory.m */,
 				5321A2D6C92E777B770073B4F9163603 /* Pod */,
@@ -245,6 +251,7 @@
 			files = (
 				3FEABE323BC34C5BC37F3C14FF03EB37 /* UIView+YSMCategory.h in Headers */,
 				23E5583713121D3DC3E04722514F133A /* YSMContainerView-umbrella.h in Headers */,
+				8FC70E7521A2ADC0009EC1B5 /* YSMHeaderView.h in Headers */,
 				242F2DB24A8835DAB1C63F11F1A36CA8 /* YSMContainerView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -373,6 +380,7 @@
 				F0DAD26AEDEB3F399B6E6E20AE5E00F5 /* UIView+YSMCategory.m in Sources */,
 				F0DED76616B1C0A4490B9DCEB3C24B9D /* YSMContainerView-dummy.m in Sources */,
 				92AC3C73A3659D7F98E8006DDC269DC8 /* YSMContainerView.m in Sources */,
+				8FC70E7621A2ADC0009EC1B5 /* YSMHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

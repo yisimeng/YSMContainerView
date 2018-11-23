@@ -8,13 +8,13 @@
 
 #import "YSMContainerView.h"
 #import "UIView+YSMCategory.h"
-
+#import "YSMHeaderView.h"
 static NSString * const kContainerViewCellReuseId = @"kContainerViewCellReuseId";
 
-@interface YSMContainerView ()<UICollectionViewDataSource, UICollectionViewDelegate>
+@interface YSMContainerView ()<UICollectionViewDataSource, UICollectionViewDelegate,YSMHeaderDelegate>
 
 @property (nonatomic, strong) UICollectionView * collectionView;
-@property (nonatomic, strong) UIView * containerHeaderView;
+@property (nonatomic, strong) YSMHeaderView * headerView;
 
 @property (nonatomic, strong) NSMutableArray<UIViewController<YSMContainrerChildControllerDelegate> *> * viewControllers;
 
@@ -42,16 +42,27 @@ static NSString * const kContainerViewCellReuseId = @"kContainerViewCellReuseId"
 
 - (void)initialization{
     self.headerHangingHeight = 0;
+    self.headerView = [[YSMHeaderView alloc] init];
+    self.headerView.delegate = self;
+    self.headerView.clipsToBounds = YES;
+    
     [self addSubview:self.collectionView];
+    [self.collectionView addSubview:self.headerView];
 }
 
 - (void)didMoveToSuperview{
     [super didMoveToSuperview];
     if (self.dataSource && [self.dataSource respondsToSelector:@selector(headerViewForContainerView:)]) {
-        self.containerHeaderView = [self.dataSource headerViewForContainerView:self];
-        self.containerHeaderView.clipsToBounds = YES;
-        [self.collectionView addSubview:self.containerHeaderView];
-        _headerViewHeight = self.containerHeaderView.frame.size.height;
+        UIView * header = [self.dataSource headerViewForContainerView:self];
+        header.frame = header.bounds;
+        [self.headerView insertSubview:header atIndex:0];
+        self.headerView.frame = CGRectMake(0, 0, CGRectGetWidth(self.frame), CGRectGetHeight(header.frame)+44);
+        header.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+        
+        _headerViewHeight = CGRectGetHeight(self.headerView.frame);
+    }
+    if (self.dataSource && [self.dataSource respondsToSelector:@selector(titlesForContainerView:)]) {
+        self.headerView.titles = [self.dataSource titlesForContainerView:self];
     }
 }
 
@@ -118,7 +129,7 @@ static NSString * const kContainerViewCellReuseId = @"kContainerViewCellReuseId"
     // 滑动时控制将要显示的scrollView的偏移量与当前一致
     UIViewController<YSMContainrerChildControllerDelegate> * childViewController = [self.dataSource containerView:self viewControllerAtIndex:indexPath.row];
     UIScrollView * childScrollView = childViewController.childScrollView;
-    CGRect headerFrame = self.containerHeaderView.frame;
+    CGRect headerFrame = self.headerView.frame;
     CGPoint contentOffset = CGPointMake(0, -(headerFrame.origin.y - (-_headerViewHeight)));
     
     // 为使child controller 的生命周期正常，所以没在cellforItem里使用
@@ -141,16 +152,17 @@ static NSString * const kContainerViewCellReuseId = @"kContainerViewCellReuseId"
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
     // 水平移动时 控制header水平同步位移
-    CGRect headerFrame = self.containerHeaderView.frame;
+    CGRect headerFrame = self.headerView.frame;
     headerFrame.origin.x = scrollView.contentOffset.x;
-    self.containerHeaderView.frame = headerFrame;
+    self.headerView.frame = headerFrame;
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
-    NSInteger currentIndex = scrollView.contentOffset.y / scrollView.bounds.size.width;
+    NSInteger currentIndex = scrollView.contentOffset.x / scrollView.bounds.size.width;
     if (self.delegate && [self.delegate respondsToSelector:@selector(containerView:didScrollToChildControllerIndex:)]) {
         [self.delegate containerView:self didScrollToChildControllerIndex:currentIndex];
     }
+    [self.headerView didSelectTitleIndex:currentIndex];
 }
 
 #pragma mark - Vertical Scroll
@@ -160,7 +172,7 @@ static NSString * const kContainerViewCellReuseId = @"kContainerViewCellReuseId"
     }
     CGPoint contentOffset = [[change valueForKey:NSKeyValueChangeNewKey] CGPointValue];
     
-    CGRect headerFrame = self.containerHeaderView.frame;
+    CGRect headerFrame = self.headerView.frame;
     // TODO: 可以设置header悬停位置
     if (contentOffset.y < -_headerViewHeight) {
         // header 完全显示后，下拉
@@ -174,12 +186,18 @@ static NSString * const kContainerViewCellReuseId = @"kContainerViewCellReuseId"
     }else{
         headerFrame.origin.y = self.headerHangingHeight -_headerViewHeight;
     }
-    self.containerHeaderView.frame = headerFrame;
+    self.headerView.frame = headerFrame;
     
     if (self.delegate && [self.delegate respondsToSelector:@selector(containerView:didScrollContentOffset:)]) {
         contentOffset.y = contentOffset.y + _headerViewHeight;
         [self.delegate containerView:self didScrollContentOffset:contentOffset];
     }
+}
+
+#pragma mark - YSMHeaderDelegate
+- (void)headerView:(YSMHeaderView *)headerView didSelectTitleAtIndex:(NSInteger)index{
+    CGPoint contentOffset = CGPointMake(index*self.collectionView.bounds.size.width, 0);
+    [self.collectionView setContentOffset:contentOffset animated:YES];
 }
 
 #pragma mark - Getter & Setter

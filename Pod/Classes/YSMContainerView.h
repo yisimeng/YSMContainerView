@@ -77,18 +77,24 @@
  @return header View
  */
 - (UIView *)headerViewForContainerView:(YSMContainerView *)containerView;
+/**
+ titles
 
+ @param containerView containerView
+ @return titles
+ */
+- (NSArray<NSString *> *)titlesForContainerView:(YSMContainerView *)containerView;
 @end
 
 @interface YSMContainerView : UIView
 
 @property (readonly) NSMutableArray * viewControllers;
-
-@property (readonly) UIView * containerHeaderView;
 /**
  header hanging height。default 0
  */
 @property (nonatomic, assign) CGFloat headerHangingHeight;
+
+@property (nonatomic, assign) CGFloat childTitleBarHeight;
 
 @property (nonatomic, weak, nullable) id <YSMContainerViewDelegate> delegate;
 

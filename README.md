@@ -21,8 +21,8 @@ pod 'YSMContainerView'
 ```
 ## TODO
 
-* TODO: 定位移除控制器
-* TODO: 添加tab title，点击切换child vc
+* 进一步封装，子视图添加 tab，点击切换子视图，tab随子视图滚动切换。定位移除控制器。
+* 指定移除子视图控制器。
 
 ## Author
 

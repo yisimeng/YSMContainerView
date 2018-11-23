@@ -43,17 +43,21 @@
     self.viewControllers = @[child1,child2,child3];
 }
 
-- (void)containerView:(YSMContainerView *)containerView didScrollContentOffset:(CGPoint)contentOffset{
+- (NSArray<NSString *> *)titlesForContainerView:(YSMContainerView *)containerView{
+    return @[@"第一个",@"第二个",@"第三"];
 }
 
-- (UIViewController<YSMContainrerChildControllerDelegate> *)containerView:(YSMContainerView *)containerView viewControllerAtIndex:(NSInteger)index {
-    UIViewController<YSMContainrerChildControllerDelegate> * vc = self.viewControllers[index];
-    return vc;
+- (void)containerView:(YSMContainerView *)containerView didScrollContentOffset:(CGPoint)contentOffset{
 }
 
 - (NSInteger)numberOfViewControllersInContainerView:(YSMContainerView *)containerView {
     return self.viewControllers.count;
 }
+- (UIViewController<YSMContainrerChildControllerDelegate> *)containerView:(YSMContainerView *)containerView viewControllerAtIndex:(NSInteger)index {
+    UIViewController<YSMContainrerChildControllerDelegate> * childController = self.viewControllers[index];
+    return childController;
+}
+
 
 - (UIView *)headerViewForContainerView:(YSMContainerView *)containerView{
     UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 200)];
