@@ -47,7 +47,7 @@ static NSString * const kContainerViewCellReuseId = @"kContainerViewCellReuseId"
     self.headerView.clipsToBounds = YES;
     
     [self addSubview:self.collectionView];
-    [self.collectionView addSubview:self.headerView];
+    [self addSubview:self.headerView];
 }
 
 - (void)didMoveToSuperview{
@@ -151,10 +151,14 @@ static NSString * const kContainerViewCellReuseId = @"kContainerViewCellReuseId"
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    // 水平移动时 控制header水平同步位移
-    CGRect headerFrame = self.headerView.frame;
-    headerFrame.origin.x = scrollView.contentOffset.x;
-    self.headerView.frame = headerFrame;
+    // 水平移动时
+    /**
+     headerView 是添加到self上的，所以水平移动时不需要移动headerview
+     
+     //    CGRect headerFrame = self.headerView.frame;
+     //    headerFrame.origin.x = scrollView.contentOffset.x;
+     //    self.headerView.frame = headerFrame;
+     */
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
