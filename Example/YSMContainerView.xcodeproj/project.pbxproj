@@ -26,6 +26,7 @@
 		8F4E64F6219C36D300AEDE49 /* YSMTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F4E64F5219C36D300AEDE49 /* YSMTableViewController.m */; };
 		8F4E64F9219D5E6C00AEDE49 /* YSMTableViewController1.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F4E64F8219D5E6C00AEDE49 /* YSMTableViewController1.m */; };
 		8F4E64FC219D708300AEDE49 /* YSMCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F4E64FB219D708300AEDE49 /* YSMCollectionViewController.m */; };
+		8F55E8A924209C1F00184963 /* YSMMenusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F55E8A824209C1F00184963 /* YSMMenusViewController.m */; };
 		A87FB4CEA5E0B528FAA83555 /* Pods_YSMContainerView_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2554547A206913D46B7C7184 /* Pods_YSMContainerView_Tests.framework */; };
 /* End PBXBuildFile section */
 
@@ -73,6 +74,8 @@
 		8F4E64F8219D5E6C00AEDE49 /* YSMTableViewController1.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YSMTableViewController1.m; sourceTree = "<group>"; };
 		8F4E64FA219D708300AEDE49 /* YSMCollectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YSMCollectionViewController.h; sourceTree = "<group>"; };
 		8F4E64FB219D708300AEDE49 /* YSMCollectionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YSMCollectionViewController.m; sourceTree = "<group>"; };
+		8F55E8A724209C1F00184963 /* YSMMenusViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YSMMenusViewController.h; sourceTree = "<group>"; };
+		8F55E8A824209C1F00184963 /* YSMMenusViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YSMMenusViewController.m; sourceTree = "<group>"; };
 		B62491597C8760D1249B2953 /* Pods-YSMContainerView_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YSMContainerView_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-YSMContainerView_Example/Pods-YSMContainerView_Example.release.xcconfig"; sourceTree = "<group>"; };
 		F5EA809BD0266A8714F813F6 /* Pods-YSMContainerView_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YSMContainerView_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YSMContainerView_Example/Pods-YSMContainerView_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		FE492D609E73403F93466F38 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
@@ -159,6 +162,8 @@
 				6003F5A6195388D20070C39A /* YSMViewController.m */,
 				8F4E64F4219C36D300AEDE49 /* YSMTableViewController.h */,
 				8F4E64F5219C36D300AEDE49 /* YSMTableViewController.m */,
+				8F55E8A724209C1F00184963 /* YSMMenusViewController.h */,
+				8F55E8A824209C1F00184963 /* YSMMenusViewController.m */,
 				8F4E64F7219D5E6C00AEDE49 /* YSMTableViewController1.h */,
 				8F4E64F8219D5E6C00AEDE49 /* YSMTableViewController1.m */,
 				8F4E64FA219D708300AEDE49 /* YSMCollectionViewController.h */,
@@ -272,6 +277,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -374,6 +380,7 @@
 				6003F59E195388D20070C39A /* YSMAppDelegate.m in Sources */,
 				8F4E64F9219D5E6C00AEDE49 /* YSMTableViewController1.m in Sources */,
 				6003F5A7195388D20070C39A /* YSMViewController.m in Sources */,
+				8F55E8A924209C1F00184963 /* YSMMenusViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				8F4E64F6219C36D300AEDE49 /* YSMTableViewController.m in Sources */,
 			);

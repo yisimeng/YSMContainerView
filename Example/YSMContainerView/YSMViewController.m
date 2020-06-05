@@ -11,6 +11,7 @@
 #import "YSMTableViewController.h"
 #import "YSMTableViewController1.h"
 #import "YSMCollectionViewController.h"
+#import "YSMMenusViewController.h"
 @interface YSMViewController ()<YSMContainerViewDataSource,YSMContainerViewDelegate>
 
 @property (nonatomic, strong) YSMContainerView * containerView;
@@ -35,16 +36,16 @@
     layout.minimumInteritemSpacing = 10;
     layout.sectionInset = UIEdgeInsetsMake(10, 10, 10, 10);
     
-    
+    YSMMenusViewController *menus = [[YSMMenusViewController alloc] init];
     YSMTableViewController * child1 = [[YSMTableViewController alloc] initWithStyle:UITableViewStylePlain];
     YSMTableViewController1 * child2 = [[YSMTableViewController1 alloc] init];
     YSMCollectionViewController * child3 = [[YSMCollectionViewController alloc] initWithCollectionViewLayout:layout];
 
-    self.viewControllers = @[child1,child2,child3];
+    self.viewControllers = @[menus,child1,child2,child3];
 }
 
 - (NSArray<NSString *> *)titlesForContainerView:(YSMContainerView *)containerView{
-    return @[@"第一个",@"第二个",@"第三"];
+    return @[@"菜单",@"第一个",@"第二个",@"第三"];
 }
 
 - (void)containerView:(YSMContainerView *)containerView didScrollContentOffset:(CGPoint)contentOffset{

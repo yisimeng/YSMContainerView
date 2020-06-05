@@ -24,19 +24,19 @@ static NSString * const kTableViewControllerCellId = @"kTableViewControllerCellI
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    NSLog(@"viewWillAppear");
+    NSLog(@"1  viewWillAppear");
 }
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    NSLog(@"viewDidAppear");
+    NSLog(@"1  viewDidAppear");
 }
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
-    NSLog(@"viewWillDisappear");
+    NSLog(@"1  viewWillDisappear");
 }
 - (void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:animated];
-    NSLog(@"viewDidDisappear");
+    NSLog(@"1  viewDidDisappear");
 }
 
 #pragma mark - Table view data source

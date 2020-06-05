@@ -23,6 +23,11 @@ static NSString * const kTableViewController1CellId = @"kTableViewController1Cel
     [self.view addSubview:self.tableView];
 }
 
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    self.tableView.contentOffset = CGPointMake(0, -244);
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return 20;
 }

@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <YSMContainerView/YSMContainerView.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface YSMMenusViewController : UIViewController
+@interface YSMMenusViewController : UIViewController<YSMContainrerChildControllerDelegate>
 
 @end
 
